@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dunia photobox: tirai merah, bilik gelap, kertas strip, lampu flash */
+  --curtain: #a61b29;
+  --curtain-deep: #7a1220;
+  --booth: #171219;
+  --booth-soft: #241c27;
+  --paper: #faf5eb;
+  --paper-dim: #e8e0d0;
+  --ink: #26181c;
+  --flash: #ffc53d;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-curtain: var(--curtain);
+  --color-curtain-deep: var(--curtain-deep);
+  --color-booth: var(--booth);
+  --color-booth-soft: var(--booth-soft);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-ink: var(--ink);
+  --color-flash: var(--flash);
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-display: var(--font-unbounded), var(--font-jakarta), sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--booth);
+  color: var(--paper);
+  font-family: var(--font-sans);
+}
+
+/* Lipatan tirai photobox: gradasi vertikal berulang di atas warna tirai */
+.bg-curtain-folds {
+  background-color: var(--curtain);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.22) 0px,
+    rgb(0 0 0 / 0) 45px,
+    rgb(255 255 255 / 0.06) 85px,
+    rgb(0 0 0 / 0) 125px,
+    rgb(0 0 0 / 0.22) 170px
+  );
+}
+
+/* Kilatan flash saat "cekrek" */
+@keyframes flash-pop {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-flash {
+  animation: flash-pop 450ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flash {
+    animation-duration: 80ms;
+  }
 }

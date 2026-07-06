@@ -40,7 +40,7 @@
 
 ### Menuju produksi (paling mendesak)
 - **Deploy**: `output: "standalone"`, Dockerfile (app + signaling), manifest k8s (Deployment/Service/Ingress + rute `wss`), CronJob harian untuk `db:cleanup`, health endpoint untuk probe. Env produksi: `NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_SIGNALING_URL`.
-- **TURN server** — belum ada; P2P bisa gagal di NAT ketat/CGNAT seluler. Rencana: tambah coturn (atau layanan TURN) **hanya jika** ketemu kasus gagal konek.
+- **TURN server**: manifest coturn disiapkan + `iceServers` di `live-booth.tsx` sudah nerima TURN lewat env (`NEXT_PUBLIC_TURN_URL/USERNAME/CREDENTIAL`, fallback STUN-only kalau kosong). Cek koneksi nyata setelah coturn benar-benar jalan di cluster.
 - **Tes lintas perangkat nyata** (HP + laptop) — butuh HTTPS, berarti setelah deploy (atau tunnel sementara).
 
 ### Fitur

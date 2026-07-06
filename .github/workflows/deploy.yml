@@ -35,6 +35,9 @@ jobs:
           build-args: |
             NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
             NEXT_PUBLIC_SIGNALING_URL=${{ vars.NEXT_PUBLIC_SIGNALING_URL }}
+            NEXT_PUBLIC_TURN_URL=${{ vars.NEXT_PUBLIC_TURN_URL }}
+            NEXT_PUBLIC_TURN_USERNAME=${{ vars.NEXT_PUBLIC_TURN_USERNAME }}
+            NEXT_PUBLIC_TURN_CREDENTIAL=${{ secrets.NEXT_PUBLIC_TURN_CREDENTIAL }}
 
   deploy:
     # Sementara nonaktif — image ditarik manual dulu di VPS.

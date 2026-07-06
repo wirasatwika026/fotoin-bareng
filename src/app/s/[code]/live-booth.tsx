@@ -195,9 +195,16 @@ export default function LiveBooth({
     if (pcRef.current || !streamRef.current) return;
     setPhase("connecting");
 
-    const pc = new RTCPeerConnection({
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-    });
+    const iceServers: RTCIceServer[] = [{ urls: "stun:stun.l.google.com:19302" }];
+    const turnUrl = process.env.NEXT_PUBLIC_TURN_URL;
+    if (turnUrl) {
+      iceServers.push({
+        urls: turnUrl,
+        username: process.env.NEXT_PUBLIC_TURN_USERNAME,
+        credential: process.env.NEXT_PUBLIC_TURN_CREDENTIAL,
+      });
+    }
+    const pc = new RTCPeerConnection({ iceServers });
     pcRef.current = pc;
     streamRef.current.getTracks().forEach((t) => pc.addTrack(t, streamRef.current!));
 

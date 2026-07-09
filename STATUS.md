@@ -22,7 +22,7 @@
 - **Landing page** (`/`) bertema tirai photobox + form masuk pakai kode.
 - **Pemilihan template** (`/baru`): galeri per kategori, preview = **render asli** hasil akhir (canvas + placeholder siluet), pilihan mode **Gantian (async)** / **Bareng langsung (live)**.
 - **Mode Async**: A foto → bagikan link/kode → B isi kapan pun → strip jadi. Halaman menunggu auto-refresh.
-- **Mode Live**: video call P2P (WebRTC, STUN publik), countdown serentak via DataChannel, tiap browser meng-capture kameranya sendiri full-res, preview foto pasangan dikirim P2P ke layar review. Fallback ke async saat peer putus / kamera gagal / signaling mati; room dibatasi 2 orang.
+- **Mode Live**: video call P2P (WebRTC, STUN publik) dengan **audio dua arah** (echo cancellation, noise suppression), countdown serentak via DataChannel, tiap browser meng-capture kameranya sendiri full-res, preview foto pasangan dikirim P2P ke layar review. Fallback ke async saat peer putus / kamera gagal / signaling mati; room dibatasi 2 orang.
 - **Kamera photobox**: countdown 3-2-1 per pose, efek flash, split screen dengan foto pasangan (atau siluet "dia nanti di sini" untuk orang pertama), toggle **ghost overlay** untuk menyamakan posisi, **WYSIWYG framing** (bingkai preview = persis crop hasil cetak), fallback upload galeri tanpa kamera.
 - **Review & retake**: retake semua atau **per-pose** sebelum kirim; pembuat sesi bisa mengulang fotonya selama pasangan belum mengisi.
 - **9 template** dalam 2 kategori (Couple, Klasik, Polaroid, Midnight, Grid Berdua 2×2, Scrapbook miring, Ulang Tahun, Sayang, Natal).

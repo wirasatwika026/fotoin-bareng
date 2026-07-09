@@ -83,6 +83,9 @@ export default function LiveBooth({
   // Preview foto pasangan per pose (dikirim P2P lewat DataChannel).
   const [partnerShots, setPartnerShots] = useState<Record<number, string>>({});
   const [error, setError] = useState<string | null>(null);
+  // Retake satu pose dari layar review — jangan tampilkan lagi kamera live
+  // pasangan, cukup kamera sendiri, biar tidak seperti balik ke panggilan.
+  const [retaking, setRetaking] = useState(false);
 
   function teardown() {
     streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -139,7 +142,7 @@ export default function LiveBooth({
   async function begin() {
     setError(null);
     try {
-      const stream = await getCameraStream();
+      const stream = await getCameraStream(true);
       if (cancelledRef.current) {
         stream.getTracks().forEach((t) => t.stop());
         return;
@@ -349,7 +352,9 @@ export default function LiveBooth({
 
   async function retakePose(index: number) {
     // Ulang pose sendiri saja — separuh dia tidak terpengaruh.
+    setRetaking(true);
     await runPose(index + 1);
+    setRetaking(false);
     setPhase("review");
   }
 
@@ -390,7 +395,7 @@ export default function LiveBooth({
     );
   }
 
-  const inCall = phase === "ready" || phase === "counting";
+  const inCall = (phase === "ready" || phase === "counting") && !retaking;
   const showMedia =
     phase === "waiting" || phase === "connecting" || inCall;
 
@@ -413,13 +418,18 @@ export default function LiveBooth({
   );
 
   return (
-    <div className={`w-full ${inCall || phase === "review" || phase === "sending" ? "max-w-2xl" : "max-w-lg"}`}>
+    <div
+      className={`w-full ${
+        inCall || phase === "review" || phase === "sending" || retaking ? "max-w-2xl" : "max-w-lg"
+      }`}
+    >
       <div className="relative overflow-hidden rounded-xl bg-black/60 shadow-[0_20px_50px_-15px_rgb(0_0_0/0.7)]">
         {phase === "idle" && (
           <div className="flex aspect-4/3 flex-col items-center justify-center gap-4 p-8 text-center">
             <p className="text-sm text-paper/70">
-              Kalian akan saling lihat lewat video, lalu countdown bareng —
-              video-nya langsung antar browser, tidak direkam server.
+              Kalian akan saling lihat dan dengar lewat video call, lalu
+              countdown bareng — video &amp; suaranya langsung antar browser,
+              tidak direkam server.
             </p>
             <button
               onClick={begin}
@@ -445,6 +455,8 @@ export default function LiveBooth({
             )}
           </div>
         )}
+
+        {phase === "counting" && retaking && <div className="relative">{localVideo}</div>}
 
         {(phase === "review" || phase === "sending") && (
           <div className="flex flex-col items-center gap-4 p-6">

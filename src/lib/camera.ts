@@ -30,9 +30,9 @@ export function captureVideoFrame(video: HTMLVideoElement, aspect: number): Prom
 }
 
 /** Kamera depan dengan resolusi cukup untuk capture 800px. */
-export function getCameraStream(): Promise<MediaStream> {
+export function getCameraStream(audio = false): Promise<MediaStream> {
   return navigator.mediaDevices.getUserMedia({
     video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } },
-    audio: false,
+    audio: audio ? { echoCancellation: true, noiseSuppression: true, autoGainControl: true } : false,
   });
 }
